@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
@@ -66,7 +68,8 @@ public class FirstView extends AppCompatActivity {
                     Node.select();
                 });
 
-
-    
+        BarcodeDetector detector = new BarcodeDetector.Builder(getApplicationContext())
+                .setBarcodeFormats(Barcode.CODABAR | Barcode.QR_CODE)
+                .build();
     }
 }
