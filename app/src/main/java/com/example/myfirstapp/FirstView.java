@@ -44,7 +44,8 @@ public class FirstView extends AppCompatActivity {
                 .thenAccept(renderable -> andyRenderable = renderable)
                 ;
 
-        arFragment.setOnTapArPlaneListener(
+
+            arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
                     if (andyRenderable == null) {
                         return;
@@ -68,8 +69,6 @@ public class FirstView extends AppCompatActivity {
                     Node.select();
                 });
 
-        BarcodeDetector detector = new BarcodeDetector.Builder(getApplicationContext())
-                .setBarcodeFormats(Barcode.CODABAR | Barcode.QR_CODE)
-                .build();
+
     }
 }
