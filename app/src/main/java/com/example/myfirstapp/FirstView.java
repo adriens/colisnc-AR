@@ -26,7 +26,7 @@ import com.google.ar.sceneform.ux.TransformableNode;
 
 public class FirstView extends AppCompatActivity {
 
-    private ArFragment arFragment;
+        private ArFragment arFragment;
     private ModelRenderable andyRenderable;
 
     @Override
