@@ -58,6 +58,11 @@ public class FirstView extends AppCompatActivity {
 
     public void createArView(){
 
+        System.out.println("DANS CREATEArVIEW\n\n----------------------------------------------------------");
+        // Si on veut cacher le logo qui nous dis comment bouger notre tél
+//        arFragment.planeDiscoveryController.hide()
+//        arFragment.planeDiscoveryController.setInstructionView(null)
+
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
         ModelRenderable.builder()
                 .setSource(this, R.raw.mascot_v2)
@@ -68,6 +73,8 @@ public class FirstView extends AppCompatActivity {
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
+                    System.out.println("DANS on tap listener\n\n----------------------------------------------------------");
+
                     if (andyRenderable == null) {
                         return;
                     }
