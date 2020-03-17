@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.util.LinkedList;
+
 
 public class MainActivity extends AppCompatActivity {
 

@@ -4,12 +4,12 @@ package com.example.myfirstapp;
 
 
 
-import android.opengl.GLSurfaceView;
+
 import android.os.Build;
 import android.os.Bundle;
 
 
-import android.service.textservice.SpellCheckerService;
+
 import android.view.MotionEvent;
 
 
@@ -21,25 +21,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.google.ar.core.Anchor;
-import com.google.ar.core.Config;
+
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 
-import com.google.ar.core.Session;
+
 import com.google.ar.sceneform.AnchorNode;
 
 
-
+import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
+import java.io.Serializable;
 
 
-public class FirstView extends AppCompatActivity implements GLSurfaceView.Renderer {
+
+public class FirstView extends AppCompatActivity implements Serializable {
 
 
 //    Session session = new Session(this);
@@ -49,8 +49,8 @@ public class FirstView extends AppCompatActivity implements GLSurfaceView.Render
     private ModelRenderable andyRenderable;
 
     // a enlever si on passe directement par le bouton next et non par la détection d'un codebarre
+    private String resultat;
 
-    String resultat = (String) getIntent().getStringExtra("resultat");
 
 
 
@@ -59,10 +59,19 @@ public class FirstView extends AppCompatActivity implements GLSurfaceView.Render
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(getIntent().hasExtra("resultat")){
+            String resultat = (String) getIntent().getSerializableExtra("resultat");
+        }
+        else {
+            resultat = "AUCUN RESULTAT";
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_renderable);
         System.out.println("ON FIRST VIEW : resultat ==> "+resultat);
 
+        Stockage stockage = new Stockage(resultat);
+        stockage.getInfo();
 
 
 
@@ -73,23 +82,10 @@ public class FirstView extends AppCompatActivity implements GLSurfaceView.Render
 
     }
 
-    @Override
-    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        System.out.println("PLAN CREEEEEEEEEEEEEEEEEEEER \n\n-------------------------------------------------------------------------");
-    }
-
-    @Override
-    public void onSurfaceChanged(GL10 gl10, int i, int i1) {
-
-    }
-
-    @Override
-    public void onDrawFrame(GL10 gl10) {
-
-    }
 
 
     public void createArView(){
+
 
 //        Config ar_session_config = session.getConfig();
 //        ar_session_config.setFocusMode(Config.FocusMode.AUTO);
