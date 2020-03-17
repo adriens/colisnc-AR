@@ -36,6 +36,8 @@ dependencies {
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.5.0"
 
 
+
+
     // barcode reader library
     implementation 'info.androidhive:barcode-reader:1.1.5'
 

@@ -70,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
 
 
-
+                    String resultat = barcode.displayValue;
+                    System.out.println("--------------------------------------------------------------------RESULTAT :"+resultat+"----------------------------------------------------------------------\n");
                     Intent intent = new Intent(this, FirstView.class);
+                    intent.putExtra("resultat",resultat);
                     startActivity(intent);
 
 
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "No barcode captured, intent data is null");
                 }
             } else {
-                        CommonStatusCodes.getStatusCodeString(resultCode);
+                CommonStatusCodes.getStatusCodeString(resultCode);
             }
         }
         else {
