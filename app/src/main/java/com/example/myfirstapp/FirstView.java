@@ -34,7 +34,10 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.mashape.unirest.http.exceptions.UnirestException;
+//import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 
@@ -50,7 +53,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
     // a enlever si on passe directement par le bouton next et non par la détection d'un codebarre
     private String resultat;
-
+    private String response;
 
 
 
@@ -60,7 +63,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if(getIntent().hasExtra("resultat")){
-            String resultat = (String) getIntent().getSerializableExtra("resultat");
+            resultat = getIntent().getStringExtra("resultat");
         }
         else {
             resultat = "AUCUN RESULTAT";
@@ -71,8 +74,14 @@ public class FirstView extends AppCompatActivity implements Serializable {
         System.out.println("ON FIRST VIEW : resultat ==> "+resultat);
 
         Stockage stockage = new Stockage(resultat);
-        stockage.getInfo();
 
+        try {
+            response = stockage.getInfo();
+
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Response : "+response);
 
 
 
