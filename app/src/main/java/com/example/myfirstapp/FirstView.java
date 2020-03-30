@@ -47,6 +47,19 @@ public class FirstView extends AppCompatActivity implements Serializable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.view_renderable);
+
+
+        //getInformation();
+
+
+        createArView();
+
+
+    }
+
+    public void getInformation(){
         String response = "resultat par defaut";
         if(getIntent().hasExtra("resultat")){
             resultat = getIntent().getStringExtra("resultat");
@@ -54,11 +67,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
         else {
             resultat = "AUCUN RESULTAT";
         }
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_renderable);
         System.out.println("ON FIRST VIEW : resultat ==> "+resultat);
-
         Stockage stockage = new Stockage(resultat);
 
         try {
@@ -86,13 +95,6 @@ public class FirstView extends AppCompatActivity implements Serializable {
             e.printStackTrace();
         }
 //        System.out.println("\n\nResponse : "+response+"\n\n");
-
-
-
-        createArView();
-
-
-
     }
 
 
@@ -110,6 +112,8 @@ public class FirstView extends AppCompatActivity implements Serializable {
 //        arFragment.planeDiscoveryController.setInstructionView(null)
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
+
+
 
         ModelRenderable.builder()
                 .setSource(this, R.raw.mascot_v2)
@@ -146,7 +150,6 @@ public class FirstView extends AppCompatActivity implements Serializable {
                 });
 
     }
-
 
 
 
