@@ -77,7 +77,6 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
         try {
             response = stockage.getInfo();
-
         } catch (UnirestException e) {
             e.printStackTrace();
         }
