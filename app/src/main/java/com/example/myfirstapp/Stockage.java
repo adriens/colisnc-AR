@@ -8,7 +8,6 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 
-
 public class Stockage {
 
     private String code;
@@ -30,12 +29,15 @@ public class Stockage {
 
         StrictMode.setThreadPolicy(policy);
 
-        HttpResponse<String> response = Unirest.get("https://colis-nc.p.rapidapi.com/colis/"+this.code)
+        System.out.println("CODE : "+this.code);
+
+        HttpResponse<String> response = Unirest.get("https://colis-nc.p.rapidapi.com/colis/RE053981424NC")
                 .header("x-rapidapi-host", "colis-nc.p.rapidapi.com")
                 .header("x-rapidapi-key", "f587dc6483msh84e28a7c9a650bcp11b260jsn7c8b7ea489f5")
 
                 .asString()
                 ;
+        //System.out.println(response.getBody().toString());
         return response.getBody().toString();
     }
 }

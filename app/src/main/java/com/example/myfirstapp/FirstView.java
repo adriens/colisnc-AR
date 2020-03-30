@@ -1,44 +1,29 @@
 package com.example.myfirstapp;
 
 
-
-
-
-
 import android.os.Build;
 import android.os.Bundle;
-
-
-
 import android.view.MotionEvent;
-
-
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-
-
 import com.google.ar.core.Anchor;
-
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
-
-
 import com.google.ar.sceneform.AnchorNode;
-
-
-import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
-//import com.squareup.okhttp.Response;
 
-import java.io.IOException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+
+//
 
 
 
@@ -62,6 +47,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String response = "resultat par defaut";
         if(getIntent().hasExtra("resultat")){
             resultat = getIntent().getStringExtra("resultat");
         }
@@ -78,9 +64,28 @@ public class FirstView extends AppCompatActivity implements Serializable {
         try {
             response = stockage.getInfo();
         } catch (UnirestException e) {
+            System.err.println("erreur unirest lors de l'appel de get info");
             e.printStackTrace();
         }
-        System.out.println("Response : "+response);
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        System.out.println("Response : "+response+"\n\n");
+        try {
+            jsonArray = new JSONArray(response);
+            //jsonObject = new JSONObject(response);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (NullPointerException n){
+            n.printStackTrace();
+        }
+
+        try {
+            System.out.println("\n\nResponse jsonArray: "+jsonArray.getJSONObject(1).get("pays")+"\n\n");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        System.out.println("\n\nResponse : "+response+"\n\n");
 
 
 
