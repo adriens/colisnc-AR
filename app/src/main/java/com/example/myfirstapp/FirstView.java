@@ -12,7 +12,12 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.Color;
+import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ShapeFactory;
+import com.google.ar.sceneform.rendering.Texture;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -112,9 +117,23 @@ public class FirstView extends AppCompatActivity implements Serializable {
 //        arFragment.planeDiscoveryController.setInstructionView(null)
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+        Texture.Sampler sampler =
+                Texture.Sampler.builder()
+                        .setMinFilter(Texture.Sampler.MinFilter.LINEAR)
+                        .setWrapMode(Texture.Sampler.WrapMode.REPEAT)
+                        .build();
+
+
+        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
+                .thenAccept(
+                        material -> {
+                            ModelRenderable redSphereRenderable =
+                                    ShapeFactory.makeSphere(0.1f, new Vector3(0.0f, 0.15f, 0.0f), material); });
+/////////////////////////////////////////////////////////////////////////////////////////////
         ModelRenderable.builder()
                 .setSource(this, R.raw.mascot_v2)
                 .build()
