@@ -4,6 +4,7 @@ package com.example.myfirstapp;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +13,8 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
-import com.google.ar.sceneform.math.Vector3;
-import com.google.ar.sceneform.rendering.Color;
-import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.google.ar.sceneform.rendering.ShapeFactory;
-import com.google.ar.sceneform.rendering.Texture;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -40,7 +37,8 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
     private ArFragment arFragment;
     private ModelRenderable andyRenderable;
-
+    private ViewRenderable testViewRenderable;
+    private TextView textView = (TextView) findViewById(R.id.card);
     // a enlever si on passe directement par le bouton next et non par la détection d'un codebarre
     private String resultat;
     private String response;
@@ -54,7 +52,6 @@ public class FirstView extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_renderable);
-
 
         //getInformation();
 
@@ -115,30 +112,23 @@ public class FirstView extends AppCompatActivity implements Serializable {
         // Si on veut cacher le logo qui nous dis comment bouger notre tél
 //        arFragment.planeDiscoveryController.hide()
 //        arFragment.planeDiscoveryController.setInstructionView(null)
-
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
+
 /////////////////////////////////////////////////////////////////////////////////////////////
+        textView.setText("VALEUR MODIFIEE");
+        textView.setTextColor(16711800);
+        ViewRenderable.builder()
+                .setView(this, R.layout.view_renderable_textview)
+                .build()
+                .thenAccept(renderable -> testViewRenderable = renderable);
 
-
-
-        Texture.Sampler sampler =
-                Texture.Sampler.builder()
-                        .setMinFilter(Texture.Sampler.MinFilter.LINEAR)
-                        .setWrapMode(Texture.Sampler.WrapMode.REPEAT)
-                        .build();
-
-
-        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.RED))
-                .thenAccept(
-                        material -> {
-                            ModelRenderable redSphereRenderable =
-                                    ShapeFactory.makeSphere(0.1f, new Vector3(0.0f, 0.15f, 0.0f), material); });
 /////////////////////////////////////////////////////////////////////////////////////////////
         ModelRenderable.builder()
                 .setSource(this, R.raw.mascot_v2)
                 .build()
                 .thenAccept(renderable -> andyRenderable = renderable)
         ;
+
 
 
         arFragment.setOnTapArPlaneListener(
@@ -165,6 +155,14 @@ public class FirstView extends AppCompatActivity implements Serializable {
                     Node.setRenderable(andyRenderable);
                     System.out.println(andyRenderable);
                     Node.select();
+
+
+                    //on attache notre textView
+                    TransformableNode Node2 = new TransformableNode(arFragment.getTransformationSystem());
+                    Node2.setParent(anchorNode);
+                    Node2.setRenderable(testViewRenderable);
+
+                    Node2.select();
 
                 });
 
