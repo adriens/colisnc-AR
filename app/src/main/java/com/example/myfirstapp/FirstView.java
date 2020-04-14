@@ -3,7 +3,9 @@ package com.example.myfirstapp;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,8 +39,9 @@ public class FirstView extends AppCompatActivity implements Serializable {
     private ArFragment arFragment;
     private ModelRenderable andyRenderable;
     private ViewRenderable testViewRenderable;
-//    private TextView textView = (TextView) findViewById(R.id.card);
-    private String string = String.format(getString(R.string.text_renderable));
+    private TextView textView;
+
+//    private String string = String.format(getString(R.string.text_renderable));
     // a enlever si on passe directement par le bouton next et non par la détection d'un codebarre
     private String resultat;
     private String response;
@@ -114,11 +117,14 @@ public class FirstView extends AppCompatActivity implements Serializable {
 //        arFragment.planeDiscoveryController.setInstructionView(null)
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
 
+        textView = (TextView) findViewById(R.id.card);
+//        textView=new TextView(this, )
+        textView.setText("YOYA LES FRERO ");
 /////////////////////////////////////////////////////////////////////////////////////////////
 //        textView.setText("VALEUR MODIFIEE");
 //        textView.setTextColor(16711800);
         ViewRenderable.builder()
-                .setView(this, R.layout.view_renderable_textview)
+                .setView(this, textView)
                 .build()
                 .thenAccept(renderable -> testViewRenderable = renderable);
 
