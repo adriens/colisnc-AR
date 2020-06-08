@@ -1,17 +1,18 @@
 package com.example.myfirstapp;
 
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
@@ -29,8 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 
 //
 
@@ -43,6 +44,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
 //    Config config = new Config(session);
 
     private TextView textView;
+    private JSONArray msg;
 
 
 
@@ -53,6 +55,11 @@ public class FirstView extends AppCompatActivity implements Serializable {
     // a enlever si on passe directement par le bouton next et non par la détection d'un codebarre
     private String resultat;
     private String response;
+
+    ListView lvInfo;
+    String[] finalInformation;
+
+    String[] essais;
 
 
 
@@ -65,7 +72,8 @@ public class FirstView extends AppCompatActivity implements Serializable {
         setContentView(R.layout.view_renderable);
 
 
-        //getInformation();
+        this.msg=getInformation();
+
 
 
         createArView();
@@ -73,7 +81,8 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
     }
 
-    public void getInformation(){
+    public JSONArray getInformation(){
+        //Organise le résultat que nous donne l'API
         String response = "resultat par defaut";
         if(getIntent().hasExtra("resultat")){
             resultat = getIntent().getStringExtra("resultat");
@@ -109,10 +118,45 @@ public class FirstView extends AppCompatActivity implements Serializable {
             e.printStackTrace();
         }
 //        System.out.println("\n\nResponse : "+response+"\n\n");
+        return jsonArray;
+    }
+
+    public String[] getData(){
+       ArrayList<String> res = new ArrayList<>();
+        for(int i=0; i<this.msg.length(); i++){
+            String tmp = "";
+            try {
+                tmp = tmp.concat(this.msg.getJSONObject(i).get("typeEvenement")+"\n");
+                String[] HeureDate = this.msg.getJSONObject(i).get("rawDateHeure").toString().split(" ");
+                tmp = tmp.concat(HeureDate[0] + " à " + HeureDate[1]+"\n");
+                tmp = tmp.concat("(" + this.msg.getJSONObject(i).getJSONObject("country").get("iso") + ") ").concat(this.msg.getJSONObject(i).get("localisation")+"\n");
+
+//                tmp = tmp + (this.msg.getJSONObject(i).get("typeEvenement")+"\n");
+//                String[] HeureDate = this.msg.getJSONObject(i).get("rawDateHeure").toString().split(" ");
+//                tmp = tmp +(HeureDate[0] + " à " + HeureDate[1]+"\n");
+//                tmp = tmp +("(" + this.msg.getJSONObject(i).getJSONObject("country").get("iso") + ") ");
+//                tmp = tmp +(this.msg.getJSONObject(i).get("localisation")+"\n");
+                try {
+                    if (!this.msg.getJSONObject(i).getJSONObject("localization").get("url").toString().equals("null")) {
+//                        A REJOUTER POUR AVOIR L'UR DE LA LOCALSATION
+//                        tmp = tmp.concat((String)this.msg.getJSONObject(i).getJSONObject("localization").get("url")+"\n");
+                    }
+                } catch (org.json.JSONException e) {
+                    e.getCause();
+                    e.getStackTrace();
+                }
+
+            }catch (JSONException jsonexeption){
+
+            }
+            res.add(tmp);
+        }
+        return res.toArray(new String[0]);
     }
 
 
 
+    @SuppressLint("WrongConstant")
     public void createArView(){
 
 
@@ -135,7 +179,24 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
         final View textEntryView = factory.inflate(R.layout.view_renderable_textview, null);
 
-        textView = (TextView) textEntryView.findViewById(R.id.card);
+//        textView = (TextView) textEntryView.findViewById(R.id.card);
+        lvInfo = (ListView) textEntryView.findViewById(R.id.card);
+//#################################################################################################################
+
+        finalInformation = getData();
+
+//#####################################################################################################################
+
+
+
+        essais = new String[]{"Pays = France\nRégion = Gars\nRégion = Gars", "iduhcuzehe\ncuhzcohezic oizh cze = chizohjcze\nRégion = Gars  \nozcjze", "fghj", "LOL"};
+
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this,R.layout.list_item,finalInformation);
+
+        lvInfo.setAdapter(monthAdapter);
+
+
+
 
         //OU BIEN FAIRE CA :
 
@@ -149,14 +210,22 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-        textView.setText("VALEUR MODIFIEE");
-//        textView.setTextColor(16711800);
+//        textView.setText("VALEUR MODIFIEE AJDOEKODEK IEOJDEJDOEJDO doezjcjaezcijz cazopiuc hj zaopijcazopihjcazpoij cjazpoih chazpoic azpoiijcjazdpoijcazpopicopzijcz \b ciiazhecpuhazeopiucazeouphcazeoiuchazoucnazoucazepoiuc zdopuchadopicj azducuh z àçc azpoziijcj azddooijicdlj c daoiaj cazihjh cpdozia jcadlksh cadzodiih c aozij casdkjlnc azdopich azdoiicjadkljkncklsjn^çasd czadic !!!\b ##############################################");
+//        textView.setText(this.msg.toString());
+////        textView.setTextColor(0xffff0000);
+////        textView.setAutoSizeTextTypeUniformWithConfiguration(5,15,1,1);
+////        textView.setMovementMethod(new ScrollingMovementMethod());
+
+
 
 
         ViewRenderable.builder()
                 .setView(this, textEntryView)
                 .build()
-                .thenAccept(renderable -> testViewRenderable = renderable);
+                .thenAccept(renderable -> {
+                    testViewRenderable = renderable;
+//                    new Vector3(0.15f, 0.20f, 0.0f);
+                });
 
 
         ModelRenderable.builder()
@@ -186,6 +255,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
                     //On attache ensuite notre modèle au point d'encrage
                     TransformableNode Node = new TransformableNode(arFragment.getTransformationSystem());
                     Node.setParent(anchorNode);
+
                     Node.setRenderable(andyRenderable);
                     System.out.println(andyRenderable);
                     Node.select();
@@ -195,7 +265,9 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
                     TransformableNode Node2 = new TransformableNode(arFragment.getTransformationSystem());
-                    Node2.setParent(anchorNode);
+                    Node2.setParent(Node);
+                    Node2.setLocalPosition(new Vector3(0.15f, 0.20f, -0.10f));
+//                    Node2.setLookDirection(new Vector3(0.0f, 0.40f, 1.00f));
 //                    Node2.setLocalPosition(new Vector3(2,2,2));
                     Node2.setRenderable(testViewRenderable);
 
