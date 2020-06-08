@@ -30,13 +30,22 @@ public class Stockage {
         StrictMode.setThreadPolicy(policy);
 
         System.out.println("CODE : "+this.code);
+        HttpResponse<String> response;
+        //RE053981424NC       CODE DE SECOURS
+        if(code.equalsIgnoreCase("AUCUN RESULTAT")){
+            response = Unirest.get("https://colis-nc.p.rapidapi.com/colis/RE053981424NC")
+                    .header("x-rapidapi-host", "colis-nc.p.rapidapi.com")
+                    .header("x-rapidapi-key", "f587dc6483msh84e28a7c9a650bcp11b260jsn7c8b7ea489f5")
 
-        HttpResponse<String> response = Unirest.get("https://colis-nc.p.rapidapi.com/colis/RE053981424NC")
-                .header("x-rapidapi-host", "colis-nc.p.rapidapi.com")
-                .header("x-rapidapi-key", "f587dc6483msh84e28a7c9a650bcp11b260jsn7c8b7ea489f5")
+                    .asString();
+        }else {
 
-                .asString()
-                ;
+            response = Unirest.get("https://colis-nc.p.rapidapi.com/colis/" + this.code)
+                    .header("x-rapidapi-host", "colis-nc.p.rapidapi.com")
+                    .header("x-rapidapi-key", "f587dc6483msh84e28a7c9a650bcp11b260jsn7c8b7ea489f5")
+
+                    .asString();
+        }
         //System.out.println(response.getBody().toString());
         return response.getBody().toString();
     }
