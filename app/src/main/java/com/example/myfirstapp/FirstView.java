@@ -1,9 +1,12 @@
 package com.example.myfirstapp;
 
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +21,9 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.HitTestResult;
+import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
@@ -62,7 +68,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
     String[] essais;
 
 
-
+    private GestureDetector trackableGestureDetector;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -156,6 +162,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
 
 
+
     @SuppressLint("WrongConstant")
     public void createArView(){
 
@@ -172,24 +179,12 @@ public class FirstView extends AppCompatActivity implements Serializable {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
 
 
-        // PK CECI NE MARCHE PAS ???????????????????????????????????????????????????????????
-
-//        textView = findViewById(R.id.card);
         final LayoutInflater factory = getLayoutInflater();
 
         final View textEntryView = factory.inflate(R.layout.view_renderable_textview, null);
-
-//        textView = (TextView) textEntryView.findViewById(R.id.card);
         lvInfo = (ListView) textEntryView.findViewById(R.id.card);
-//#################################################################################################################
 
         finalInformation = getData();
-
-//#####################################################################################################################
-
-
-
-        essais = new String[]{"Pays = France\nRégion = Gars\nRégion = Gars", "iduhcuzehe\ncuhzcohezic oizh cze = chizohjcze\nRégion = Gars  \nozcjze", "fghj", "LOL"};
 
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(this,R.layout.list_item,finalInformation);
 
@@ -260,7 +255,16 @@ public class FirstView extends AppCompatActivity implements Serializable {
                     System.out.println(andyRenderable);
                     Node.select();
 
-                    //on attache notre textView
+
+                    Node.setOnTapListener((v,event) -> {
+//                        v.getNode().setLocalRotation(Quaternion.axisAngle(new Vector3(1,1,1), (float) 3.2));
+                        System.out.println("\n\n\nOMGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\n\n\n");
+                    });
+                    
+
+
+
+                    //on attache notre listView
 
 
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
@@ -275,9 +279,8 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
                 });
 
+
+
     }
-
-
-
 
 }
