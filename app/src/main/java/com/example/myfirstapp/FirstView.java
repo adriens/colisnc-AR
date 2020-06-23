@@ -4,19 +4,23 @@ package com.example.myfirstapp;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
@@ -153,7 +157,8 @@ public class FirstView extends AppCompatActivity implements Serializable {
                 }
 
             }catch (JSONException jsonexeption){
-
+                res.add("PAS D'ELEMENT");
+                return res.toArray(new String[0]);
             }
             res.add(tmp);
         }
@@ -223,6 +228,7 @@ public class FirstView extends AppCompatActivity implements Serializable {
                 });
 
 
+
         ModelRenderable.builder()
                 .setSource(this, R.raw.mascot_v2)
                 .build()
@@ -257,7 +263,29 @@ public class FirstView extends AppCompatActivity implements Serializable {
 
 
                     Node.setOnTapListener((v,event) -> {
-//                        v.getNode().setLocalRotation(Quaternion.axisAngle(new Vector3(1,1,1), (float) 3.2));
+                        ProgressBar progressBar = (ProgressBar) textEntryView.findViewById(R.id.determinateBar);
+
+//                        progressBar.setProgress(0,true);
+                        if(progressBar.getProgress()>=100){
+                            progressBar.setProgress(0,true);
+                        }
+                        else {
+                            progressBar.incrementProgressBy(25);
+                        }
+
+
+
+                        this.msg = getInformation();
+
+
+                        finalInformation = getData();
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,R.layout.list_item,finalInformation);
+
+                        lvInfo.setAdapter(adapter);
+
+//                        progressBar.setProgress(100,true);
+
                         System.out.println("\n\n\nOMGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\n\n\n");
                     });
                     
